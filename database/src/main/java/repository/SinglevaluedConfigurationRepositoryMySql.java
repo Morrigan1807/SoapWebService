@@ -15,18 +15,21 @@ public class SinglevaluedConfigurationRepositoryMySql implements SinglevaluedCon
     private static final String USER = "niagara";
     private static final String PASSWORD = "123456Qz!";
 
-    private static final String DELETE = "DELETE FROM general_singlevalued_configuration WHERE attribute_name=?";
-    private static final String SELECT_ALL = "SELECT * FROM general_singlevalued_configuration";
-    private static final String SELECT_BY_ATTRIBUTE_NAME = "SELECT * FROM general_singlevalued_configuration WHERE attribute_name=?";
-    private static final String INSERT = "INSERT INTO general_singlevalued_configuration(attribute_name, attribute_value, attribute_desc) VALUES(?, ?, ?)";
-    private static final String UPDATE = "UPDATE general_singlevalued_configuration SET attribute_name=?, attribute_value=?, attribute_desc=? WHERE attribute_name=?";
+    private static final String DELETE = "DELETE FROM service.general_singlevalued_configuration WHERE attribute_name=?";
+    private static final String SELECT_ALL = "SELECT * FROM service.general_singlevalued_configuration";
+    private static final String SELECT_BY_ATTRIBUTE_NAME = "SELECT * FROM service.general_singlevalued_configuration WHERE attribute_name=?";
+    private static final String INSERT = "INSERT INTO service.general_singlevalued_configuration(attribute_name, attribute_value, attribute_desc) VALUES(?, ?, ?)";
+    private static final String UPDATE = "UPDATE service.general_singlevalued_configuration SET attribute_name=?, attribute_value=?, attribute_desc=? WHERE attribute_name=?";
 
     public void delete(String attributeName) {
+        log.info("Trying to delete row from 'general_singlevalued_configuration' " +
+                "with attribute name: " + attributeName);
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE)) {
             statement.setString(1, attributeName);
 
             statement.executeUpdate();
+            log.info("Row successfully deleted.");
         } catch (SQLException | ClassNotFoundException exception) {
             log.error(exception.getMessage());
         }
@@ -34,7 +37,7 @@ public class SinglevaluedConfigurationRepositoryMySql implements SinglevaluedCon
 
     public List<SinglevaluedConfiguration> selectAll() {
         List<SinglevaluedConfiguration> result = new ArrayList<>();
-
+        log.info("Trying to select all rows from 'general_singlevalued_configuration'.");
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(SELECT_ALL);
@@ -46,14 +49,16 @@ public class SinglevaluedConfigurationRepositoryMySql implements SinglevaluedCon
                         .attributeDesc(resultSet.getString("attribute_desc"))
                         .build());
             }
+            log.info("Rows successfully received.");
         } catch (SQLException | ClassNotFoundException exception) {
             log.error(exception.getMessage());
         }
-
         return result;
     }
 
     public SinglevaluedConfiguration selectByAttributeName(String attributeName) {
+        log.info("Trying to select all rows from 'general_singlevalued_configuration' " +
+                "with attribute name: " + attributeName);
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_ATTRIBUTE_NAME)) {
             statement.setString(1, attributeName);
@@ -66,6 +71,7 @@ public class SinglevaluedConfigurationRepositoryMySql implements SinglevaluedCon
                         .attributeDesc(resultSet.getString("attribute_desc"))
                         .build();
             }
+            log.info("Row successfully received.");
         } catch (SQLException | ClassNotFoundException exception) {
             log.error(exception.getMessage());
         }
@@ -73,6 +79,10 @@ public class SinglevaluedConfigurationRepositoryMySql implements SinglevaluedCon
     }
 
     public void insert(SinglevaluedConfiguration singlevaluedConfiguration) {
+        log.info("Trying to insert row in 'general_singlevalued_configuration':");
+        log.info("attribute_name = " + singlevaluedConfiguration.getAttributeName());
+        log.info("attribute_value = " + singlevaluedConfiguration.getAttributeValue());
+        log.info("attribute_desc = " + singlevaluedConfiguration.getAttributeDesc());
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT)) {
             statement.setString(1, singlevaluedConfiguration.getAttributeName());
@@ -80,12 +90,17 @@ public class SinglevaluedConfigurationRepositoryMySql implements SinglevaluedCon
             statement.setString(3, singlevaluedConfiguration.getAttributeDesc());
 
             statement.executeUpdate();
+            log.info("Row successfully added.");
         } catch (SQLException | ClassNotFoundException exception) {
             log.error(exception.getMessage());
         }
     }
 
     public void update(SinglevaluedConfiguration singlevaluedConfiguration) {
+        log.info("Trying to update row in 'general_singlevalued_configuration':");
+        log.info("new attribute_name = " + singlevaluedConfiguration.getAttributeName());
+        log.info("new attribute_value = " + singlevaluedConfiguration.getAttributeValue());
+        log.info("new attribute_desc = " + singlevaluedConfiguration.getAttributeDesc());
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setString(1, singlevaluedConfiguration.getAttributeName());
@@ -94,12 +109,14 @@ public class SinglevaluedConfigurationRepositoryMySql implements SinglevaluedCon
             statement.setString(4, singlevaluedConfiguration.getAttributeName());
 
             statement.executeUpdate();
+            log.info("Row successfully updated.");
         } catch (SQLException | ClassNotFoundException exception) {
             log.error(exception.getMessage());
         }
     }
 
     private Connection getConnection() throws SQLException, ClassNotFoundException {
+        log.info("Connecting to the MySQL server...");
         Class.forName(DRIVER_NAME);
         return DriverManager.getConnection(DB_URL, USER, PASSWORD);
     }
