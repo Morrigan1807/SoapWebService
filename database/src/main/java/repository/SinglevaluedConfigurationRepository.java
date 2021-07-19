@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface SinglevaluedConfigurationRepository {
 
-    void delete(String attributeName);
+    void delete(SinglevaluedConfiguration singlevaluedConfiguration);
 
     List<SinglevaluedConfiguration> selectAll();
 

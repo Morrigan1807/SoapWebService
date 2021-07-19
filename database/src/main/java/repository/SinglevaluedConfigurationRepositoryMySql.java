@@ -2,122 +2,44 @@ package repository;
 
 import lombok.extern.log4j.Log4j2;
 import model.SinglevaluedConfiguration;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
 public class SinglevaluedConfigurationRepositoryMySql implements SinglevaluedConfigurationRepository {
 
-    private static final String DRIVER_NAME = "com.mysql.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://localhost/service";
-    private static final String USER = "niagara";
-    private static final String PASSWORD = "123456Qz!";
-
-    private static final String DELETE = "DELETE FROM service.general_singlevalued_configuration WHERE attribute_name=?";
-    private static final String SELECT_ALL = "SELECT * FROM service.general_singlevalued_configuration";
-    private static final String SELECT_BY_ATTRIBUTE_NAME = "SELECT * FROM service.general_singlevalued_configuration WHERE attribute_name=?";
-    private static final String INSERT = "INSERT INTO service.general_singlevalued_configuration(attribute_name, attribute_value, attribute_desc) VALUES(?, ?, ?)";
-    private static final String UPDATE = "UPDATE service.general_singlevalued_configuration SET attribute_name=?, attribute_value=?, attribute_desc=? WHERE attribute_name=?";
-
-    public void delete(String attributeName) {
-        log.info("Trying to delete row from 'general_singlevalued_configuration' " +
-                "with attribute name: " + attributeName);
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(DELETE)) {
-            statement.setString(1, attributeName);
-
-            statement.executeUpdate();
-            log.info("Row successfully deleted.");
-        } catch (SQLException | ClassNotFoundException exception) {
-            log.error(exception.getMessage());
-        }
-    }
-
-    public List<SinglevaluedConfiguration> selectAll() {
-        List<SinglevaluedConfiguration> result = new ArrayList<>();
-        log.info("Trying to select all rows from 'general_singlevalued_configuration'.");
-        try (Connection connection = getConnection();
-             Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(SELECT_ALL);
-
-            while (resultSet.next()) {
-                result.add(SinglevaluedConfiguration.builder()
-                        .attributeName(resultSet.getString("attribute_name"))
-                        .attributeValue(resultSet.getString("attribute_value"))
-                        .attributeDesc(resultSet.getString("attribute_desc"))
-                        .build());
-            }
-            log.info("Rows successfully received.");
-        } catch (SQLException | ClassNotFoundException exception) {
-            log.error(exception.getMessage());
-        }
-        return result;
-    }
-
     public SinglevaluedConfiguration selectByAttributeName(String attributeName) {
-        log.info("Trying to select all rows from 'general_singlevalued_configuration' " +
-                "with attribute name: " + attributeName);
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_BY_ATTRIBUTE_NAME)) {
-            statement.setString(1, attributeName);
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                return SinglevaluedConfiguration.builder()
-                        .attributeName(resultSet.getString("attribute_name"))
-                        .attributeValue(resultSet.getString("attribute_value"))
-                        .attributeDesc(resultSet.getString("attribute_desc"))
-                        .build();
-            }
-            log.info("Row successfully received.");
-        } catch (SQLException | ClassNotFoundException exception) {
-            log.error(exception.getMessage());
-        }
-        return null;
+        return HibernateSessionFactory.getSessionFactory().openSession().get(SinglevaluedConfiguration.class, attributeName);
     }
 
     public void insert(SinglevaluedConfiguration singlevaluedConfiguration) {
-        log.info("Trying to insert row in 'general_singlevalued_configuration':");
-        log.info("attribute_name = " + singlevaluedConfiguration.getAttributeName());
-        log.info("attribute_value = " + singlevaluedConfiguration.getAttributeValue());
-        log.info("attribute_desc = " + singlevaluedConfiguration.getAttributeDesc());
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(INSERT)) {
-            statement.setString(1, singlevaluedConfiguration.getAttributeName());
-            statement.setString(2, singlevaluedConfiguration.getAttributeValue());
-            statement.setString(3, singlevaluedConfiguration.getAttributeDesc());
-
-            statement.executeUpdate();
-            log.info("Row successfully added.");
-        } catch (SQLException | ClassNotFoundException exception) {
-            log.error(exception.getMessage());
-        }
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        session.save(singlevaluedConfiguration);
+        transaction.commit();
+        session.close();
     }
 
     public void update(SinglevaluedConfiguration singlevaluedConfiguration) {
-        log.info("Trying to update row in 'general_singlevalued_configuration':");
-        log.info("new attribute_name = " + singlevaluedConfiguration.getAttributeName());
-        log.info("new attribute_value = " + singlevaluedConfiguration.getAttributeValue());
-        log.info("new attribute_desc = " + singlevaluedConfiguration.getAttributeDesc());
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(UPDATE)) {
-            statement.setString(1, singlevaluedConfiguration.getAttributeName());
-            statement.setString(2, singlevaluedConfiguration.getAttributeValue());
-            statement.setString(3, singlevaluedConfiguration.getAttributeDesc());
-            statement.setString(4, singlevaluedConfiguration.getAttributeName());
-
-            statement.executeUpdate();
-            log.info("Row successfully updated.");
-        } catch (SQLException | ClassNotFoundException exception) {
-            log.error(exception.getMessage());
-        }
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        session.update(singlevaluedConfiguration);
+        transaction.commit();
+        session.close();
     }
 
-    private Connection getConnection() throws SQLException, ClassNotFoundException {
-        log.info("Connecting to the MySQL server...");
-        Class.forName(DRIVER_NAME);
-        return DriverManager.getConnection(DB_URL, USER, PASSWORD);
+    public void delete(SinglevaluedConfiguration singlevaluedConfiguration) {
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        session.delete(singlevaluedConfiguration);
+        transaction.commit();
+        session.close();
+    }
+
+    public List<SinglevaluedConfiguration> selectAll() {
+        return (List<SinglevaluedConfiguration>) HibernateSessionFactory.getSessionFactory().openSession()
+                .createQuery("From SinglevaluedConfiguration").list();
     }
 }
