@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+                  xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+                  xmlns:wsaws="http://www.w3.org/2005/08/addressing"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	              xmlns:tns="http://com.epolsoft.service.provisioning/ws"
+	              xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	              name="Provisioning_WS" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+	              xmlns:servicetypes="http://com.epolsoft.service.provisioning/ws/servicetypes"
+	              targetNamespace="http://com.epolsoft.service.provisioning/ws">
+
+	<wsdl:documentation>Provisioning Web Service Interface Definition</wsdl:documentation>
+	<!-- TODO change targetNamespaces and namespaces-->
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://com.epolsoft.service.provisioning/ws" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import
+				namespace="http://com.epolsoft.service.provisioning/ws/servicetypes"
+				schemaLocation="Provisioning_Schema.xsd">
+			</xsd:import>
+		</xsd:schema>
+
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import
+				namespace="http://com.epolsoft.service.provisioning/ws/servicetypes"
+				schemaLocation="Provisioning_Schema.xsd">
+			</xsd:import>
+		</xsd:schema>
+	</wsdl:types>
+
+	<!-- **************************************************************************** -->
+	<!--       GENERAL CONFIGURATION DATA - REQUEST AND RESPONSES MESSAGES DEFINITION -->
+	<!-- **************************************************************************** -->
+
+	<wsdl:message name="GetConfigurationRequest">
+		<wsdl:part name="GetConfigurationRequest" type="servicetypes:GetConfigurationRequest"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetConfigurationResponse">
+		<wsdl:part name="ResponseMessageWithConfiguration" type="servicetypes:ResponseMessageWithConfiguration"/>
+	</wsdl:message>
+
+	<wsdl:message name="DeleteConfigurationRequest">
+		<wsdl:part name="DeleteConfigurationRequest" type="servicetypes:DeleteConfigurationRequest"/>
+	</wsdl:message>
+
+	<wsdl:message name="DeleteConfigurationResponse">
+		<wsdl:part name="ResponseMessage" type="servicetypes:ResponseMessageType"/>
+	</wsdl:message>
+
+	<wsdl:message name="CreateConfigurationRequest">
+		<wsdl:part name="CreateConfigurationRequest" type="servicetypes:CreateConfigurationRequest"/>
+	</wsdl:message>
+
+	<wsdl:message name="CreateConfigurationResponse">
+		<wsdl:part name="ResponseMessage" type="servicetypes:ResponseMessageType"/>
+	</wsdl:message>
+
+	<wsdl:message name="UpdateConfigurationRequest">
+		<wsdl:part name="UpdateConfigurationRequest" type="servicetypes:UpdateConfigurationRequest"/>
+	</wsdl:message>
+
+	<wsdl:message name="UpdateConfigurationResponse">
+		<wsdl:part name="ResponseMessage" type="servicetypes:ResponseMessageType"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetAllConfigurationsRequest">
+		<wsdl:part name="ListOfConfigurationsType" type="servicetypes:ListOfConfigurationsType"/>
+	</wsdl:message>
+
+	<wsdl:message name="GetAllConfigurationsResponse">
+		<wsdl:part name="ResponseMessageWithAllConfigurations" type="servicetypes:ResponseMessageWithAllConfigurations"/>
+	</wsdl:message>
+
+	<!-- ********************** -->
+	<!-- OPERATIONS DEFINITION  -->
+	<!-- ********************** -->
+
+	<wsdl:portType name="Provisioning_WS">
+
+		<wsdl:operation name="GetConfiguration">
+			<wsdl:documentation>This operation retrieves single valued attributes for configurable entities</wsdl:documentation>
+			<wsdl:input message="tns:GetConfigurationRequest"/>
+			<wsdl:output message="tns:GetConfigurationResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="CreateConfiguration">
+			<wsdl:documentation>This operation sets values for single valued attributes for configurable entities</wsdl:documentation>
+			<wsdl:input message="tns:CreateConfigurationRequest"/>
+			<wsdl:output message="tns:CreateConfigurationResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="DeleteConfiguration">
+			<wsdl:documentation>This operation sets values for single valued attributes for configurable entities</wsdl:documentation>
+			<wsdl:input message="tns:DeleteConfigurationRequest"/>
+			<wsdl:output message="tns:DeleteConfigurationResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="UpdateConfiguration">
+			<wsdl:documentation>This operation sets values for single valued attributes for configurable entities</wsdl:documentation>
+			<wsdl:input message="tns:UpdateConfigurationRequest"/>
+			<wsdl:output message="tns:UpdateConfigurationResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetAllConfigurations">
+			<wsdl:documentation>This operation sets values for single valued attributes for configurable entities</wsdl:documentation>
+			<wsdl:input message="tns:GetAllConfigurationsRequest"/>
+			<wsdl:output message="tns:GetAllConfigurationsResponse"/>
+		</wsdl:operation>
+
+	</wsdl:portType>
+
+	<wsdl:binding name="Provisioning_WSSOAP" type="tns:Provisioning_WS">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+		<!-- TODO change soapActions and namespaces -->
+
+		<wsdl:operation name="GetConfiguration">
+			<soap:operation soapAction="http://com.epolsoft.service.provisioning/ws/GetSingleValuedAttributes"/>
+			<wsdl:input>
+				<soap:body namespace="http://com.epolsoft.service.provisioning/ws" parts="GetConfigurationRequest" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://com.epolsoft.service.provisioning/ws" parts="ResponseMessageWithConfiguration" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="CreateConfiguration">
+			<soap:operation soapAction="http://com.epolsoft.service.provisioning/ws/SetSingleValuedAttributes"/>
+			<wsdl:input>
+				<soap:body namespace="http://com.epolsoft.service.provisioning/ws" parts="CreateConfigurationRequest" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://com.epolsoft.service.provisioning/ws" parts="ResponseMessage" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="DeleteConfiguration">
+			<soap:operation soapAction="http://com.epolsoft.service.provisioning/ws/AddAndUpdateMultiValuedAttributeValues"/>
+			<wsdl:input>
+				<soap:body namespace="http://com.epolsoft.service.provisioning/ws" parts="DeleteConfigurationRequest" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://com.epolsoft.service.provisioning/ws" parts="ResponseMessage" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="UpdateConfiguration">
+			<soap:operation soapAction="http://com.epolsoft.service.provisioning/ws/FilterByPatternValuesMultiValuedAttribute"/>
+			<wsdl:input>
+				<soap:body namespace="http://com.epolsoft.service.provisioning/ws" parts="UpdateConfigurationRequest" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://com.epolsoft.service.provisioning/ws" parts="ResponseMessage" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetAllConfigurations">
+			<soap:operation soapAction="http://com.epolsoft.service.provisioning/ws/DeleteValuesFromMultiValuedAttribute"/>
+			<wsdl:input>
+				<soap:body namespace="http://com.epolsoft.service.provisioning/ws"  parts="ListOfConfigurationsType" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://com.epolsoft.service.provisioning/ws" parts="ResponseMessageWithAllConfigurations" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+	</wsdl:binding>
+
+	<wsdl:service name="Provisioning_WS">
+		<wsdl:port binding="tns:Provisioning_WSSOAP" name="Provisioning_WSSOAP">
+			<soap:address
+				location="http://localhost:28080/" /> <!-- TODO change location -->
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>
