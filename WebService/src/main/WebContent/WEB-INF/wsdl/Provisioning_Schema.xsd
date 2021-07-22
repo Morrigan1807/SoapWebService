@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<xsd:schema version="2.1"
-            xmlns:tns="http://com.epolsoft.service.provisioning/ws/servicetypes"
-            targetNamespace="http://com.epolsoft.service.provisioning/ws/servicetypes"
-            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<xsd:schema xmlns:tns="http://com.epolsoft.service.provisioning/ws/servicetypes"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            version="2.1"
+            targetNamespace="http://com.epolsoft.service.provisioning/ws/servicetypes">
 
     <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
 
@@ -76,8 +76,10 @@
     <xsd:complexType name="RequestErrorReferenceType">
         <xsd:choice>
             <xsd:element name="GetConfigurationRequest" type="tns:GetConfigurationRequest" minOccurs="1"/>
-            <xsd:element name="ResponseMessageWithConfiguration" type="tns:ResponseMessageWithConfiguration" minOccurs="1"/>
-            <xsd:element name="ResponseMessageWithAllConfigurations" type="tns:ResponseMessageWithAllConfigurations" minOccurs="1"/>
+            <xsd:element name="ResponseMessageWithConfiguration" type="tns:ResponseMessageWithConfiguration"
+                         minOccurs="1"/>
+            <xsd:element name="ResponseMessageWithAllConfigurations" type="tns:ResponseMessageWithAllConfigurations"
+                         minOccurs="1"/>
             <xsd:element name="DeleteConfigurationRequest" type="tns:DeleteConfigurationRequest" minOccurs="1"/>
             <xsd:element name="CreateConfiguration" type="tns:CreateConfigurationRequest" minOccurs="1"/>
             <xsd:element name="UpdateConfiguration" type="tns:UpdateConfigurationRequest" minOccurs="1"/>
