@@ -1,5 +1,6 @@
 package model;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import javax.persistence.Table;
 @Data
 @Entity
 @NoArgsConstructor
+@Builder
 @Table(name = "general_singlevalued_configuration")
 public class SinglevaluedConfiguration {
     @Id
