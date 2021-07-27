@@ -6,18 +6,22 @@
          version="4.0">
     <display-name>SOAP Web Service</display-name>
     <listener>
-        <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
+        <listener-class>
+            com.sun.xml.ws.transport.http.servlet.WSServletContextListener
+        </listener-class>
     </listener>
 
     <servlet>
-        <servlet-name>ProvisioningWSImpl</servlet-name>
-        <servlet-class>com.niagara.provisioning.ws.jaxws.ProvisioningWSImpl</servlet-class>
+        <servlet-name>JAXWSServlet</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-
     <servlet-mapping>
-        <servlet-name>ProvisioningWSImpl</servlet-name>
-        <url-pattern>/ws</url-pattern>
+        <servlet-name>JAXWSServlet</servlet-name>
+        <url-pattern>/personWS</url-pattern>
     </servlet-mapping>
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
 
 </web-app>
