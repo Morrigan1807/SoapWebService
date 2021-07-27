@@ -1,5 +1,5 @@
-import com.niagara.provisioning.ws.jaxws.Configuration;
-import com.niagara.provisioning.ws.jaxws.ListOfConfigurations;
+package com.niagara.provisioning.ws.jaxws;
+
 import model.SinglevaluedConfiguration;
 
 import java.util.List;

@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>WebService</artifactId>
+    <packaging>war</packaging>
 
     <build>
         <plugins>
@@ -27,7 +28,7 @@
                 </executions>
                 <configuration>
                     <packageName>com.niagara.provisioning.ws.jaxws</packageName>
-                    <wsdlDirectory>${project.basedir}/src/main/WebContent/WEB-INF/wsdl/</wsdlDirectory>
+                    <wsdlDirectory>src/main/WebContent/WEB-INF/wsdl/</wsdlDirectory>
                     <wsdlFiles>
                         <wsdlFile>
                             Provisioning_WS.wsdl
@@ -41,10 +42,34 @@
                         <artifactId>jaxws-tools</artifactId>
                         <version>2.2.10</version>
                     </dependency>
+
+                    <dependency>
+                        <groupId>com.sun.xml.ws</groupId>
+                        <artifactId>jaxws-rt</artifactId>
+                        <version>2.2.10</version>
+                    </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <webXml>src/main/WebContent/WEB-INF/web.xml</webXml>
+                    <attachClasses>true</attachClasses>
+                    <classesClassifier>classes</classesClassifier>
+                </configuration>
             </plugin>
         </plugins>
     </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.niagara</groupId>
+            <artifactId>Database</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

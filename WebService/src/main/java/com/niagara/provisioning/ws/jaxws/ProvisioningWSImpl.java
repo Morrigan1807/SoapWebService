@@ -1,10 +1,13 @@
-import com.niagara.provisioning.ws.jaxws.*;
+package com.niagara.provisioning.ws.jaxws;
+
 import model.SinglevaluedConfiguration;
 import repository.SinglevaluedConfigurationRepository;
 import repository.SinglevaluedConfigurationRepositoryMySql;
 
+import javax.jws.WebService;
 import java.util.List;
 
+@WebService(portName = "Provisioning_WSSOAP", targetNamespace = "http://com.niagara.provisioning.ws", endpointInterface = "com.niagara.provisioning.ws.jaxws.ProvisioningWS")
 public class ProvisioningWSImpl implements ProvisioningWS {
 
     private final SinglevaluedConfigurationRepository repository = new SinglevaluedConfigurationRepositoryMySql();
@@ -22,12 +25,12 @@ public class ProvisioningWSImpl implements ProvisioningWS {
 
     @Override
     public ResponseMessageType createConfiguration(Configuration configuration) {
-            repository.insert(Util.convertConfigurationFromServiceToDb(configuration));
+        repository.insert(Util.convertConfigurationFromServiceToDb(configuration));
 
-            ResponseMessageType response = new ResponseMessageType();
-            response.setResultCode(200);
+        ResponseMessageType response = new ResponseMessageType();
+        response.setResultCode(200);
 
-            return response;
+        return response;
     }
 
     @Override

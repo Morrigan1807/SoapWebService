@@ -11,7 +11,6 @@
     <modules>
         <module>Database</module>
         <module>WebService</module>
-        <module>Util</module>
     </modules>
 
     <dependencies>

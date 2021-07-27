@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<xsd:schema xmlns:tns="http://com.epolsoft.service.provisioning/ws/servicetypes"
+<xsd:schema xmlns:tns="http://localhost:8080/niagara/ws/servicetypes"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             version="2.1"
-            targetNamespace="http://com.epolsoft.service.provisioning/ws/servicetypes">
+            targetNamespace="http://localhost:8080/niagara/ws/servicetypes">
 
     <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
 

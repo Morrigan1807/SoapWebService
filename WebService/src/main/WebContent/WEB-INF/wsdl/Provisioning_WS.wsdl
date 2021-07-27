@@ -3,25 +3,24 @@
                   xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
                   xmlns:wsaws="http://www.w3.org/2005/08/addressing"
                   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-	              xmlns:tns="http://com.epolsoft.service.provisioning/ws"
+	              xmlns:tns="http://localhost:8080/niagara/ws"
 	              xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	              name="Provisioning_WS" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
-	              xmlns:servicetypes="http://com.epolsoft.service.provisioning/ws/servicetypes"
-	              targetNamespace="http://com.epolsoft.service.provisioning/ws">
+	              xmlns:servicetypes="http://localhost:8080/niagara/ws/servicetypes"
+	              targetNamespace="http://localhost:8080/niagara/ws">
 
 	<wsdl:documentation>Provisioning Web Service Interface Definition</wsdl:documentation>
-	<!-- TODO change targetNamespaces and namespaces-->
 	<wsdl:types>
-		<xsd:schema targetNamespace="http://com.epolsoft.service.provisioning/ws" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+		<xsd:schema targetNamespace="http://localhost:8080/niagara/ws" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 			<xsd:import
-				namespace="http://com.epolsoft.service.provisioning/ws/servicetypes"
+				namespace="http://localhost:8080/niagara/ws/servicetypes"
 				schemaLocation="Provisioning_Schema.xsd">
 			</xsd:import>
 		</xsd:schema>
 
 		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 			<xsd:import
-				namespace="http://com.epolsoft.service.provisioning/ws/servicetypes"
+				namespace="http://localhost:8080/niagara/ws/servicetypes"
 				schemaLocation="Provisioning_Schema.xsd">
 			</xsd:import>
 		</xsd:schema>
@@ -111,55 +110,54 @@
 
 	<wsdl:binding name="Provisioning_WSSOAP" type="tns:Provisioning_WS">
 		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
-		<!-- TODO change soapActions and namespaces -->
 
 		<wsdl:operation name="GetConfiguration">
-			<soap:operation soapAction="http://com.epolsoft.service.provisioning/ws/GetSingleValuedAttributes"/>
+			<soap:operation soapAction="http://localhost:8080/niagara/ws/GetSingleValuedAttributes"/>
 			<wsdl:input>
-				<soap:body namespace="http://com.epolsoft.service.provisioning/ws" parts="ConfigurationName" use="literal"/>
+				<soap:body namespace="http://localhost:8080/niagara/ws" parts="ConfigurationName" use="literal"/>
 			</wsdl:input>
 			<wsdl:output>
-				<soap:body namespace="http://com.epolsoft.service.provisioning/ws" parts="ResponseMessageWithConfiguration" use="literal"/>
+				<soap:body namespace="http://localhost:8080/niagara/ws" parts="ResponseMessageWithConfiguration" use="literal"/>
 			</wsdl:output>
 		</wsdl:operation>
 
 		<wsdl:operation name="CreateConfiguration">
-			<soap:operation soapAction="http://com.epolsoft.service.provisioning/ws/SetSingleValuedAttributes"/>
+			<soap:operation soapAction="http://localhost:8080/niagara/ws/SetSingleValuedAttributes"/>
 			<wsdl:input>
-				<soap:body namespace="http://com.epolsoft.service.provisioning/ws" parts="Configuration" use="literal"/>
+				<soap:body namespace="http://localhost:8080/niagara/ws" parts="Configuration" use="literal"/>
 			</wsdl:input>
 			<wsdl:output>
-				<soap:body namespace="http://com.epolsoft.service.provisioning/ws" parts="ResponseMessage" use="literal"/>
+				<soap:body namespace="http://localhost:8080/niagara/ws" parts="ResponseMessage" use="literal"/>
 			</wsdl:output>
 		</wsdl:operation>
 
 		<wsdl:operation name="DeleteConfiguration">
-			<soap:operation soapAction="http://com.epolsoft.service.provisioning/ws/AddAndUpdateMultiValuedAttributeValues"/>
+			<soap:operation soapAction="http://localhost:8080/niagara/ws/AddAndUpdateMultiValuedAttributeValues"/>
 			<wsdl:input>
-				<soap:body namespace="http://com.epolsoft.service.provisioning/ws" parts="Configuration" use="literal"/>
+				<soap:body namespace="http://localhost:8080/niagara/ws" parts="Configuration" use="literal"/>
 			</wsdl:input>
 			<wsdl:output>
-				<soap:body namespace="http://com.epolsoft.service.provisioning/ws" parts="ResponseMessage" use="literal"/>
+				<soap:body namespace="http://localhost:8080/niagara/ws" parts="ResponseMessage" use="literal"/>
 			</wsdl:output>
 		</wsdl:operation>
 
 		<wsdl:operation name="UpdateConfiguration">
-			<soap:operation soapAction="http://com.epolsoft.service.provisioning/ws/FilterByPatternValuesMultiValuedAttribute"/>
+			<soap:operation soapAction="http://localhost:8080/niagara/ws/FilterByPatternValuesMultiValuedAttribute"/>
 			<wsdl:input>
-				<soap:body namespace="http://com.epolsoft.service.provisioning/ws" parts="Configuration" use="literal"/>
+				<soap:body namespace="http://localhost:8080/niagara/ws" parts="Configuration" use="literal"/>
 			</wsdl:input>
 			<wsdl:output>
-				<soap:body namespace="http://com.epolsoft.service.provisioning/ws" parts="ResponseMessage" use="literal"/>
+				<soap:body namespace="http://localhost:8080/niagara/ws" parts="ResponseMessage" use="literal"/>
 			</wsdl:output>
 		</wsdl:operation>
 
 		<wsdl:operation name="GetAllConfigurations">
-			<soap:operation soapAction="http://com.epolsoft.service.provisioning/ws/DeleteValuesFromMultiValuedAttribute"/>
+			<soap:operation soapAction="http://localhost:8080/niagara/ws/DeleteValuesFromMultiValuedAttribute"/>
 			<wsdl:input>
-				<soap:body namespace="http://com.epolsoft.service.provisioning/ws"  parts="ListOfConfigurations" use="literal"/>
+				<soap:body namespace="http://localhost:8080/niagara/ws"  parts="ListOfConfigurations" use="literal"/>
 			</wsdl:input>
 			<wsdl:output>
-				<soap:body namespace="http://com.epolsoft.service.provisioning/ws" parts="ResponseMessageWithAllConfigurations" use="literal"/>
+				<soap:body namespace="http://localhost:8080/niagara/ws" parts="ResponseMessageWithAllConfigurations" use="literal"/>
 			</wsdl:output>
 		</wsdl:operation>
 
@@ -168,7 +166,7 @@
 	<wsdl:service name="Provisioning_WS">
 		<wsdl:port binding="tns:Provisioning_WSSOAP" name="Provisioning_WSSOAP">
 			<soap:address
-				location="http://localhost:8080/niagara" />
+				location="http://localhost:8080/niagara/ws" />
 		</wsdl:port>
 	</wsdl:service>
 
