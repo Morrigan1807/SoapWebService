@@ -165,7 +165,7 @@
 	<wsdl:service name="Provisioning_WS">
 		<wsdl:port binding="tns:Provisioning_WSSOAP" name="Provisioning_WSSOAP">
 			<soap:address
-				location="" />
+				location="http://localhost:8080/niagara/ws" />
 		</wsdl:port>
 	</wsdl:service>
 
