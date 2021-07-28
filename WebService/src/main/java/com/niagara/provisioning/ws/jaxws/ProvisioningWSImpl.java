@@ -3,6 +3,7 @@ package com.niagara.provisioning.ws.jaxws;
 import model.SinglevaluedConfiguration;
 import repository.SinglevaluedConfigurationRepository;
 import repository.SinglevaluedConfigurationRepositoryMySql;
+import org.apache.http.HttpStatus;
 
 import javax.jws.WebService;
 import java.util.List;
@@ -18,7 +19,7 @@ public class ProvisioningWSImpl implements ProvisioningWS {
 
         ResponseMessageWithConfiguration response = new ResponseMessageWithConfiguration();
         response.setConfiguration(Util.convertConfigurationFromDbToService(configurationDB));
-        response.setResultCode(200);
+        response.setResultCode(HttpStatus.SC_OK);
 
         return response;
     }
@@ -28,7 +29,7 @@ public class ProvisioningWSImpl implements ProvisioningWS {
         repository.insert(Util.convertConfigurationFromServiceToDb(configuration));
 
         ResponseMessageType response = new ResponseMessageType();
-        response.setResultCode(200);
+        response.setResultCode(HttpStatus.SC_OK);
 
         return response;
     }
@@ -38,7 +39,7 @@ public class ProvisioningWSImpl implements ProvisioningWS {
         repository.delete(Util.convertConfigurationFromServiceToDb(configuration));
 
         ResponseMessageType response = new ResponseMessageType();
-        response.setResultCode(204);
+        response.setResultCode(HttpStatus.SC_NO_CONTENT);
 
         return response;
     }
@@ -48,18 +49,18 @@ public class ProvisioningWSImpl implements ProvisioningWS {
         repository.update(Util.convertConfigurationFromServiceToDb(configuration));
 
         ResponseMessageType response = new ResponseMessageType();
-        response.setResultCode(200);
+        response.setResultCode(HttpStatus.SC_OK);
 
         return response;
     }
 
     @Override
-    public ResponseMessageWithAllConfigurations getAllConfigurations(ListOfConfigurations listOfConfigurations) {
+    public ResponseMessageWithAllConfigurations getAllConfigurations() {
         List<SinglevaluedConfiguration> configurationsDB = repository.selectAll();
 
         ResponseMessageWithAllConfigurations response = new ResponseMessageWithAllConfigurations();
         response.setConfigurations(Util.convertListOfConfigurationsFromDbToService(configurationsDB));
-        response.setResultCode(200);
+        response.setResultCode(HttpStatus.SC_OK);
 
         return response;
     }

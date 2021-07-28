@@ -8,20 +8,19 @@ import java.net.URL;
 public class SOAPPublisherClient {
 
     public static void main(String[] args) throws MalformedURLException {
-        URL wsdlURL = new URL("https://localhost:8080/niagara/ws?wsdl");
-        //check above URL in browser, you should see WSDL file
+        URL wsdlURL = new URL("http://localhost:8080/niagara/ws?wsdl");
 
-        //creating QName using targetNamespace and name
-        QName qname = new QName("https://localhost:8080/niagara/", "ws");
+        QName qname = new QName("http://com.niagara.provisioning.ws", "ProvisioningWSImplService");
 
         Service service = Service.create(wsdlURL, qname);
 
-        //We need to pass interface and model beans to client
-        ProvisioningWSImpl ws = service.getPort(ProvisioningWSImpl.class);
+        ProvisioningWS ws = service.getPort(ProvisioningWS.class);
 
         ConfigurationName name = new ConfigurationName();
         name.setName("CC");
-        System.out.println(ws.getConfiguration(name));
+        Configuration configuration = ws.getConfiguration(name).getConfiguration();
+        System.out.println(configuration.getName());
+        System.out.println(configuration.getValue());
+        System.out.println(configuration.getDescription());
     }
-
 }
