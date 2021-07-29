@@ -69,6 +69,8 @@
 		<wsdl:part name="ResponseMessageWithAllConfigurations" type="servicetypes:ResponseMessageWithAllConfigurations"/>
 	</wsdl:message>
 
+
+
 	<!-- ********************** -->
 	<!-- OPERATIONS DEFINITION  -->
 	<!-- ********************** -->

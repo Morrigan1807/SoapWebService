@@ -1,7 +1,4 @@
-import com.niagara.provisioning.ws.jaxws.Configuration;
-import com.niagara.provisioning.ws.jaxws.ConfigurationName;
-import com.niagara.provisioning.ws.jaxws.ProvisioningWS;
-import com.niagara.provisioning.ws.jaxws.ResponseMessageWithConfiguration;
+import com.niagara.provisioning.ws.jaxws.*;
 import com.sun.xml.ws.fault.ServerSOAPFaultException;
 import lombok.extern.log4j.Log4j2;
 import org.apache.http.HttpStatus;
@@ -18,24 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestSuite {
 
-    private static final String WSDL_URL = "http://localhost:8080/niagara/ws?wsdl";
-    private static final String NAMESPACE_URL = "http://com.niagara.provisioning.ws";
-    private static final String LOCAL_PART = "ProvisioningWSImplService";
-    private static ProvisioningWS provisioningWS;
+    private static final ProvisioningWS provisioningWS = new ProvisioningWSImpl();
     private static Configuration newConfiguration;
-
-    @BeforeAll
-    public static void prepareServiceAndNewConfiguration() {
-        try {
-            URL wsdlURL = new URL(WSDL_URL);
-            QName qname = new QName(NAMESPACE_URL, LOCAL_PART);
-            Service service = Service.create(wsdlURL, qname);
-            provisioningWS = service.getPort(ProvisioningWS.class);
-        }
-        catch (MalformedURLException exception) {
-            log.error(exception.getMessage());
-        }
-    }
 
     @Test
     @Order(1)
@@ -45,7 +26,7 @@ public class TestSuite {
         newConfiguration.setValue("Dark");
         newConfiguration.setDescription("Main theme");
 
-        assertEquals(HttpStatus.SC_OK, provisioningWS.createConfiguration(newConfiguration).getResultCode());
+        assertEquals(HttpStatus.SC_CREATED, provisioningWS.createConfiguration(newConfiguration).getResultCode());
     }
 
     @Test
@@ -55,7 +36,7 @@ public class TestSuite {
         configurationName.setName(newConfiguration.getName());
 
         ResponseMessageWithConfiguration response = provisioningWS.getConfiguration(configurationName);
-        assertEquals(200, response.getResultCode());
+        assertEquals(HttpStatus.SC_OK, response.getResultCode());
 
         Configuration receivedConfiguration = response.getConfiguration();
         assertEquals(newConfiguration.getName(), receivedConfiguration.getName());
@@ -98,6 +79,6 @@ public class TestSuite {
         ConfigurationName configurationName = new ConfigurationName();
         configurationName.setName(newConfiguration.getName());
 
-        assertThrows(ServerSOAPFaultException.class, () -> provisioningWS.getConfiguration(configurationName));
+        assertEquals(HttpStatus.SC_NOT_FOUND, provisioningWS.getConfiguration(configurationName).getResultCode());
     }
 }

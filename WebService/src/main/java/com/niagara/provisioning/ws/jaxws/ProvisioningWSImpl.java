@@ -1,9 +1,9 @@
 package com.niagara.provisioning.ws.jaxws;
 
 import model.SinglevaluedConfiguration;
+import org.apache.http.HttpStatus;
 import repository.SinglevaluedConfigurationRepository;
 import repository.SinglevaluedConfigurationRepositoryMySql;
-import org.apache.http.HttpStatus;
 
 import javax.jws.WebService;
 import java.util.List;
@@ -18,6 +18,15 @@ public class ProvisioningWSImpl implements ProvisioningWS {
         SinglevaluedConfiguration configurationDB = repository.selectByAttributeName(configurationName.getName());
 
         ResponseMessageWithConfiguration response = new ResponseMessageWithConfiguration();
+
+        if (configurationDB == null) {
+            response.setResultCode(HttpStatus.SC_NOT_FOUND);
+            ErrorType error = new ErrorType();
+            error.setErrorDescription("Configuration not found");
+            response.setError(error);
+
+            return response;
+        }
         response.setConfiguration(Util.convertConfigurationFromDbToService(configurationDB));
         response.setResultCode(HttpStatus.SC_OK);
 
@@ -29,7 +38,7 @@ public class ProvisioningWSImpl implements ProvisioningWS {
         repository.insert(Util.convertConfigurationFromServiceToDb(configuration));
 
         ResponseMessageType response = new ResponseMessageType();
-        response.setResultCode(HttpStatus.SC_OK);
+        response.setResultCode(HttpStatus.SC_CREATED);
 
         return response;
     }
@@ -59,6 +68,16 @@ public class ProvisioningWSImpl implements ProvisioningWS {
         List<SinglevaluedConfiguration> configurationsDB = repository.selectAll();
 
         ResponseMessageWithAllConfigurations response = new ResponseMessageWithAllConfigurations();
+
+        if (configurationsDB.size() == 0) {
+            response.setResultCode(HttpStatus.SC_NOT_FOUND);
+            ErrorType error = new ErrorType();
+            error.setErrorDescription("Configurations not found");
+            response.setError(error);
+
+            return response;
+        }
+
         response.setConfigurations(Util.convertListOfConfigurationsFromDbToService(configurationsDB));
         response.setResultCode(HttpStatus.SC_OK);
 
