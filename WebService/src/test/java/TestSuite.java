@@ -49,7 +49,7 @@ public class TestSuite {
     public void updateCreatedConfigurationTest() {
         newConfiguration.setValue("Light");
         newConfiguration.setDescription("Main theme of design");
-        assertEquals(HttpStatus.SC_OK, provisioningWS.updateConfiguration(newConfiguration).getResultCode());
+        assertEquals(HttpStatus.SC_CREATED, provisioningWS.updateConfiguration(newConfiguration).getResultCode());
     }
 
     @Test

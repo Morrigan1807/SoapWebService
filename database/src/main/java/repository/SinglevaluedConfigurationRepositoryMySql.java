@@ -4,7 +4,10 @@ import lombok.extern.log4j.Log4j2;
 import model.SinglevaluedConfiguration;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.id.IdentifierGenerationException;
 
+import javax.persistence.OptimisticLockException;
 import java.util.List;
 
 @Log4j2
@@ -15,27 +18,33 @@ public class SinglevaluedConfigurationRepositoryMySql implements SinglevaluedCon
     }
 
     public void insert(SinglevaluedConfiguration singlevaluedConfiguration) {
-        Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        Transaction transaction = session.beginTransaction();
-        session.save(singlevaluedConfiguration);
-        transaction.commit();
-        session.close();
+        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.save(singlevaluedConfiguration);
+            transaction.commit();
+        } catch (ConstraintViolationException | IllegalArgumentException | IdentifierGenerationException exception) {
+            log.error(exception.getMessage());
+        }
     }
 
     public void update(SinglevaluedConfiguration singlevaluedConfiguration) {
-        Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        Transaction transaction = session.beginTransaction();
-        session.update(singlevaluedConfiguration);
-        transaction.commit();
-        session.close();
+        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.update(singlevaluedConfiguration);
+            transaction.commit();
+        } catch (OptimisticLockException | IllegalArgumentException exception) {
+            log.error(exception.getMessage());
+        }
     }
 
     public void delete(SinglevaluedConfiguration singlevaluedConfiguration) {
-        Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        Transaction transaction = session.beginTransaction();
-        session.delete(singlevaluedConfiguration);
-        transaction.commit();
-        session.close();
+        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.delete(singlevaluedConfiguration);
+            transaction.commit();
+        } catch (IllegalArgumentException exception) {
+            log.error(exception.getMessage());
+        }
     }
 
     public List<SinglevaluedConfiguration> selectAll() {

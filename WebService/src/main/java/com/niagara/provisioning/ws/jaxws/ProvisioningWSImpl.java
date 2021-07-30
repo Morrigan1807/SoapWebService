@@ -58,7 +58,7 @@ public class ProvisioningWSImpl implements ProvisioningWS {
         repository.update(Util.convertConfigurationFromServiceToDb(configuration));
 
         ResponseMessageType response = new ResponseMessageType();
-        response.setResultCode(HttpStatus.SC_OK);
+        response.setResultCode(HttpStatus.SC_CREATED);
 
         return response;
     }
